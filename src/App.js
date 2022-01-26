@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import allowedWords from "./words/allowed-guesses.txt";
 import answers from "./words/answers-alphabetical.txt";
 
 function App() {
-  const [allowedWordList, setAllowedWordList] = useState([]);
   const [answerList, setAnswerList] = useState([]);
   const [targetWord, setTargetWord] = useState("");
   const [currentAttempt, setCurrentAttempt] = useState("");
+  const [validAttemptList, setValidAttemptList] = useState([]);
 
   const handleUpdateCurrentAttempt = (text) => {
     const val = text.target.value;
@@ -16,19 +15,12 @@ function App() {
 
   const handleEnter = () => {
     if (answerList.includes(currentAttempt)) {
-      alert("noice");
+      setValidAttemptList(validAttemptList.concat(currentAttempt));
+      setCurrentAttempt("");
     } else {
       alert("not allowed");
     }
   };
-
-  useEffect(() => {
-    fetch(allowedWords)
-      .then((r) => r.text())
-      .then((text) => {
-        setAllowedWordList(text.split("\n"));
-      });
-  }, []);
 
   useEffect(() => {
     fetch(answers)
@@ -47,15 +39,39 @@ function App() {
   }, [answerList]);
 
   return (
-    <div className="App">
+    <center>
       TARGET WORD: {targetWord}
+      <br />
+      {validAttemptList.map((word) => (
+        <div style={{ flexDirection: "row", display: "flex" }}>
+          {word.split("").map((w, i) => {
+            return (
+              <div
+                style={{
+                  height: 20,
+                  width: 20,
+                  margin: 2,
+                  backgroundColor:
+                    targetWord[i] === w
+                      ? "green"
+                      : targetWord.includes(w)
+                      ? "yellow"
+                      : "grey",
+                }}
+              >
+                {w}
+              </div>
+            );
+          })}
+          <br />
+        </div>
+      ))}
       <br />
       <input value={currentAttempt} onChange={handleUpdateCurrentAttempt} />
       <button disabled={currentAttempt.length !== 5} onClick={handleEnter}>
         Enter
       </button>
-      <button>Remove</button>
-    </div>
+    </center>
   );
 }
 
