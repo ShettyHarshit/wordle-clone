@@ -1,7 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+import logo from "./logo.svg";
+import allowedWords from "./words/allowed-guesses.txt";
+import answers from "./words/answers-alphabetical.txt";
 
 function App() {
+  const [allowedWordList, setAllowedWordList] = useState([]);
+  const [answerList, setAnswerList] = useState([]);
+
+  useEffect(() => {
+    fetch(allowedWords)
+      .then((r) => r.text())
+      .then((text) => {
+        setAllowedWordList(text.split("\n"));
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(answers)
+      .then((r) => r.text())
+      .then((text) => {
+        setAnswerList(text.split("\n"));
+      });
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
