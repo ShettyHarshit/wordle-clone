@@ -7,6 +7,7 @@ import answers from "./words/answers-alphabetical.txt";
 function App() {
   const [allowedWordList, setAllowedWordList] = useState([]);
   const [answerList, setAnswerList] = useState([]);
+  const [targetWord, setTargetWord] = useState("");
 
   useEffect(() => {
     fetch(allowedWords)
@@ -23,6 +24,14 @@ function App() {
         setAnswerList(text.split("\n"));
       });
   }, []);
+
+  useEffect(() => {
+    if (answerList) {
+      const randomWordFromList =
+        answerList[Math.floor(Math.random() * answerList.length)];
+      setTargetWord(randomWordFromList);
+    }
+  }, [answerList]);
 
   return (
     <div className="App">
