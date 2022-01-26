@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import logo from "./logo.svg";
 import allowedWords from "./words/allowed-guesses.txt";
 import answers from "./words/answers-alphabetical.txt";
 
@@ -8,6 +7,20 @@ function App() {
   const [allowedWordList, setAllowedWordList] = useState([]);
   const [answerList, setAnswerList] = useState([]);
   const [targetWord, setTargetWord] = useState("");
+  const [currentAttempt, setCurrentAttempt] = useState("");
+
+  const handleUpdateCurrentAttempt = (text) => {
+    const val = text.target.value;
+    if (val.length < 6) setCurrentAttempt(val);
+  };
+
+  const handleEnter = () => {
+    if (answerList.includes(currentAttempt)) {
+      alert("noice");
+    } else {
+      alert("not allowed");
+    }
+  };
 
   useEffect(() => {
     fetch(allowedWords)
@@ -35,20 +48,13 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      TARGET WORD: {targetWord}
+      <br />
+      <input value={currentAttempt} onChange={handleUpdateCurrentAttempt} />
+      <button disabled={currentAttempt.length !== 5} onClick={handleEnter}>
+        Enter
+      </button>
+      <button>Remove</button>
     </div>
   );
 }
