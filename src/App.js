@@ -3,10 +3,10 @@ import "./App.css";
 import GameWrapper from "./components/GameWrapper";
 import InputActions from "./components/InputActions";
 import InputAnswerList from "./components/InputAnswerList";
-import answers from "./words/answers-alphabetical.txt";
+import useWordList from "./hooks/useWordList";
 
 function App() {
-  const [answerList, setAnswerList] = useState([]);
+  const [answerList] = useWordList();
   const [targetWord, setTargetWord] = useState("");
   const [currentAttempt, setCurrentAttempt] = useState("");
   const [validAttemptList, setValidAttemptList] = useState([]);
@@ -24,14 +24,6 @@ function App() {
       alert("not allowed");
     }
   };
-
-  useEffect(() => {
-    fetch(answers)
-      .then((r) => r.text())
-      .then((text) => {
-        setAnswerList(text.split("\n"));
-      });
-  }, []);
 
   useEffect(() => {
     if (answerList) {
