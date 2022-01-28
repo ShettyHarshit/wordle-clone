@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import GameWrapper from "./components/GameWrapper";
+import InputActions from "./components/InputActions";
 import InputAnswerList from "./components/InputAnswerList";
 import answers from "./words/answers-alphabetical.txt";
 
@@ -45,18 +46,9 @@ function App() {
     <GameWrapper>
       <h3 className="game-title">WORDLE CLONE</h3>
       <InputAnswerList list={validAttemptList} targetWord={targetWord} /> <br />
-      <input value={currentAttempt} onChange={handleUpdateCurrentAttempt} />
-      <button
-        disabled={currentAttempt.length !== 5}
-        onKeyPress={(event) => {
-          if (event.key === "Enter") {
-            handleUpdateCurrentAttempt();
-          }
-        }}
-        onClick={handleEnter}
-      >
-        Enter
-      </button>
+      <InputActions
+        {...{ currentAttempt, handleUpdateCurrentAttempt, handleEnter }}
+      />
     </GameWrapper>
   );
 }
