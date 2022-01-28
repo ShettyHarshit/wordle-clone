@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import GameWrapper from "./components/GameWrapper";
+import InputAnswerList from "./components/InputAnswerList";
 import answers from "./words/answers-alphabetical.txt";
 
 function App() {
@@ -38,40 +40,24 @@ function App() {
     }
   }, [answerList]);
 
+  console.log("🚀 ~ file: App.js ~ line 54 ~ App ~ targetWord", targetWord);
   return (
-    <center>
-      TARGET WORD: {targetWord}
-      <br />
-      {validAttemptList.map((word) => (
-        <div style={{ flexDirection: "row", display: "flex" }}>
-          {word.split("").map((w, i) => {
-            return (
-              <div
-                style={{
-                  height: 20,
-                  width: 20,
-                  margin: 2,
-                  backgroundColor:
-                    targetWord[i] === w
-                      ? "green"
-                      : targetWord.includes(w)
-                      ? "yellow"
-                      : "grey",
-                }}
-              >
-                {w}
-              </div>
-            );
-          })}
-          <br />
-        </div>
-      ))}
-      <br />
+    <GameWrapper>
+      <h3 className="game-title">WORDLE CLONE</h3>
+      <InputAnswerList list={validAttemptList} targetWord={targetWord} /> <br />
       <input value={currentAttempt} onChange={handleUpdateCurrentAttempt} />
-      <button disabled={currentAttempt.length !== 5} onClick={handleEnter}>
+      <button
+        disabled={currentAttempt.length !== 5}
+        onKeyPress={(event) => {
+          if (event.key === "Enter") {
+            handleUpdateCurrentAttempt();
+          }
+        }}
+        onClick={handleEnter}
+      >
         Enter
       </button>
-    </center>
+    </GameWrapper>
   );
 }
 
